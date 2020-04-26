@@ -14,23 +14,19 @@ Generate html pages from your feature files and share them easier.
 
 ## how to run gherkin-htmlify
 
-  Create a file named runner.js with content like:
-
-    var gherkinHtmlify = require('./gherkin-htmlify');
-    var featureDirectoryPath = '<your feature file folder>';
-    var outputDirectory = '<where to put the html files>';
-    var options = {
-      mainTitle: "<title to use>"
-    };                                                                     
-    gherkinHtmlify.process(featureDirectoryPath, outputDirectory, options);
-  
-  Now, checkout the gherkin-htmlify project to generate html pages
+Checkout the gherkin-htmlify project to generate html pages
   
     git clone https://github.com/sboursault/gherkin-htmlify.git
+    cd gherkin-htmlify
     npm install gherkin-htmlify
     node runner.js
 
-   
+You'll see sample output in 
+  
+	./gherkin-htmlify/test/output dir
 
+## how to use your project's gherking files  
+
+Modify runner.js to use your input and output dirs. 
     
    

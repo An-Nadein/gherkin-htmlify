@@ -1,6 +1,8 @@
-var gherkinHtmlify = require('.');
-var featureDirectoryPath = 'C:/git/tcm/gherkin-htmlify/test/features';
-var outputDirectory = 'C:/git/tcm/gherkin-htmlify/test/output';
+var pwd = '.';
+ var gherkinHtmlify = require(pwd);
+var path = require('path');
+var featureDirectoryPath = path.join(pwd, '/test/features');
+var outputDirectory = path.join(pwd, '/test/output');
 var options = {
   mainTitle: "My Meaningful Title"
 };                      
