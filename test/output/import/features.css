@@ -1,0 +1,111 @@
+.h1, .h2, .h3, h1, h2, h3 {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+a.link-info, a.link-info:focus, a.link-info:active {
+  color: #31708f;
+}
+a.link-success, a.link-success:focus, a.link-success:active {
+  color: #3c763d;
+}
+a.link-warning, a.link-warning:focus, a.link-warning:active {
+  color: #8a6d3b;
+}
+a.link-danger, a.link-danger:focus, a.link-danger:active {
+  color: #a94442;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.selected {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.list-group-item-heading {
+  margin-bottom: 10px;
+}
+
+ul {
+  padding-left: 25px;
+}
+
+.table {
+  width: inherit;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.table>thead>tr>th, .table>thead>tr>td,
+.table>tbody>tr>th, .table>tbody>tr>td {
+  border-bottom: 1px solid #ddd;
+}
+
+.monospace {
+  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+  padding: 5px 10px;
+  margin: 10px 0 10px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #333;
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: #fbfbfb;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.indent-block {
+  margin-left : 1.5rem;
+}
+
+.outline-label {
+    color: #888;
+    font-style: italic;
+    text-decoration: blink;
+}
+
+.outline-steps {
+    border-left: 5px solid #ccc;
+    margin-left: 1.0rem;
+    margin-top: 0.2rem;
+    padding: 0.8rem 0.5rem;
+    background-color: #fbfbfb;
+}
+
+.step-first-word {
+  /*color: darkred;*/
+  color: saddlebrown;
+}
+
+.examples {
+  margin-top: 1.5rem;
+}
+
+.examples table>thead>tr>th, .examples table>tbody>tr>th {
+    font-weight: normal;
+    color: darkgreen;
+    font-style: italic;
+    /*text-decoration: underline;*/
+    /*border-top: none;*/
+}
+
+.step-value {
+  /*color: darkblue;*/
+  /*color: darkcyan;*/
+  color: darkgreen;
+  font-style: italic;
+}
+
+mark{
+    background: yellow;
+    color: black;
+    padding: 0.1rem 0;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp" ng-controller="FeatureController">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>{{project}}</title>
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="import/offcanvas.css">
+    <!-- custom css -->
+    <link rel="stylesheet" href="import/features.css">
+  </head>
+  <body ng-cloak>
+
+    <nav class="navbar navbar-fixed-top navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-brand">{{project}}</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar">
+          <div class="clearfix">
+            <p class="navbar-text pull-right">Published on : {{date}}</p>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+
+      <div class="row row-offcanvas row-offcanvas-left">
+
+        <div id="sidebar" class="col-sm-4 col-md-3 sidebar-offcanvas">
+          <div class="panel panel-default">
+            <div class="panel-heading strong">Features</div>
+            <div  class="panel-body">
+              <div class="input-group" class="panel-body" id="keyword-controls">
+                <input ng-model="searchText" placeholder="filter..." class="form-control">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button" ng-click="searchText = ''">X</button>
+                </span>
+              </div>
+              <br>
+              <ul>
+                <li><a ng-class="{'selected' : !selectedFeature}" class="link-info" href="#!/features">Overview</a></li>
+                <li ng-repeat="node in tableOfContents.children | withWords:searchText"
+                    ng-include="'node-overview.html'"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-8 col-md-9">
+          <p class="pull-left visible-xs">
+            <button data-toggle="offcanvas" class="btn btn-primary btn-xs" type="button">Toggle nav</button>
+          </p>
+          <div class="row ">
+            <div ng-if="!selectedFeature" class="jumbotron">
+              <h3>Welcome to {{project}}</h3>
+            </div>
+
+            <main>
+              <div ng-if="!selectedFeature" class="panel panel-default">
+                <h3 class="panel-heading">Overview</h3>
+                <br>
+                <ul>
+                  <li ng-repeat="node in tableOfContents.children" ng-include="'node.html'"></li>
+                </ul>
+              </div>
+
+              <div ng-if="selectedFeature" class="panel panel-{{selectedFeature.status}}">
+                <h3 class="panel-heading">{{selectedFeature.formattedPath}}</h3>
+                <div class="panel-body">
+                  <div ng-if="selectedFeature.meta" class="container">
+                    <span ng-repeat="meta in selectedFeature.meta" class="label label-{{metaStyle(meta)}}">{{meta}}</span>
+                  </div>
+                  <br>
+                  <div ng-if="selectedFeature.description" ng-bind-html="selectedFeature.description | rawHtml"></div>
+                  <br ng-if="selectedFeature.description">
+                  <div ng-repeat="test in selectedFeature.tests">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-target="#{{scenario + '-' + $index}}">{{test.name}}</a>
+                        </h4>
+                        <div ng-if="test.meta">
+                          <span ng-repeat="meta in test.meta" class="label label-{{metaStyle(meta)}}">{{meta}}</span>
+                        </div>
+                      </div>
+                      <div id="{{scenario + '-' + $index}}" class="collapse panel-body panel-collapse" ng-class="{'in' : !test.isJustInCase}">
+                        <p ng-if="test.documentation">{{test.documentation}}</p>
+                        <span ng-if="test.exampleBlocks.length > 0" class="outline-label">Outline:</span>
+                        <section ng-class="{'outline-steps' : test.exampleBlocks.length > 0}">
+                          <div ng-repeat="step in test.steps" class="indent-block">
+                            <br ng-if="step.leaveBlankLine">
+                            <div ng-bind-html="step.htmlText | rawHtml"></div>
+                            <div ng-if="step.table.length > 0" ng-bind-html="step.htmlTable | rawHtml" class="indent-block"></div>
+                            <div ng-if="step.multilignValue" ng-bind-html="step.htmlMultilignValue | rawHtml" class="indent-block monospace"></div>
+                          </div>
+                        </section>
+                        <!--<p ng-if="test.exampleBlocks.length > 0">Examples:</p>-->
+                        <div ng-repeat="exampleBlock in test.exampleBlocks" class="examples">
+                          <div ng-if="exampleBlock.tags">
+                            <span ng-repeat="tag in exampleBlock.tags" class="label label-{{metaStyle(tag)}}">{{tag}}</span>
+                          </div>
+                          <div ng-bind-html="exampleBlock.htmlTable | rawHtml"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ng-include="'node.html'" -->
+    <script type="text/ng-template" id="node.html">
+      <a ng-if="node.feature" href="#!/features/{{node.feature.pathValueForUrl}}" class="strong link-{{node.feature.status}}">{{node.name}}</a>
+      <span ng-if="!node.feature && node.children" class="strong">{{node.name}}</span>
+      <span ng-if="!node.children">{{node.name}}</span>
+      <ul ng-if="node.children">
+        <li ng-repeat="node in node.children" ng-include="'node.html'"></li>
+      </ul>
+    </script>
+
+    <!-- ng-include="'node-overview.html'" -->
+    <script type="text/ng-template" id="node-overview.html">
+      <a ng-if="node.feature" href="#!/features/{{node.feature.pathValueForUrl}}" ng-class="{'selected' : node.feature == selectedFeature}" class="link-{{node.feature.status}}">{{node.name}}</a>
+      <span ng-if="!node.feature && node.children">{{node.name}}</span>
+      <!--<span>({{node.children.length}})</span>-->
+      <ul ng-if="node.children && !node.feature">
+        <li ng-repeat="node in node.children | withWords:searchText" ng-include="'node-overview.html'"></li>
+      </ul>
+    </script>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function () {
+      $('[data-toggle="offcanvas"]').click(function () {
+        $('.row-offcanvas').toggleClass('active')
+      });
+    });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.10.1/mark.min.js"></script>
+    <script src="data.js"></script>
+    <script src="import/app.js"></script>
+    <script src="import/highlighting.js"></script>
+
+  </body>
+</html>
